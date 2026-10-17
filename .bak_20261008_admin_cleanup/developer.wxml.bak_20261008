@@ -1,0 +1,61 @@
+<view class="container" wx:if="{{isAuthorized}}">
+  <view class="header">开发者工具</view>
+  
+  <view class="section">
+    <view class="section-title">其他工具</view>
+    <button class="btn-secondary" bindtap="handleClearCache">清理缓存</button>
+  </view>
+
+  <view class="section">
+    <view class="section-title">所有订单 (All Orders)</view>
+    
+    <view class="tab-bar">
+      <view 
+        class="tab-item {{activeTab === index ? 'active' : ''}}" 
+        wx:for="{{tabs}}" 
+        wx:key="index" 
+        bindtap="onTabChange" 
+        data-index="{{index}}"
+      >
+        {{item}}
+      </view>
+    </view>
+
+    <button class="btn-primary" bindtap="handleRefresh" data-refresh="true">刷新列表</button>
+    
+    <!-- Order List -->
+    <view class="order-list" wx:if="{{activeTab !== 3}}">
+        <block wx:for="{{allOrders}}" wx:key="_id">
+            <view class="order-item" wx:if="{{activeTab === 0 || (activeTab === 1 && (item._collection == 'atfirst_pddbox' || item._collection == 'atfirst_req')) || (activeTab === 2 && (item._collection == 'final_pddbox' || item._collection == 'final_req'))}}" bindtap="navigateToDetail" data-id="{{item._id}}" data-collection="{{item._collection}}">
+                <view class="order-info">
+                    <view>ID: <text catchtap="copyText" data-text="{{item._id}}" class="copy-text">{{item._id}}</text></view>
+                    <view>Type: {{item.publish_type}} | State: {{item.publish_state}}</view>
+                    <view>Collection: {{item._collection}}</view>
+                    <view>Created: {{item.createdAt}}</view>
+                </view>
+                <button class="btn-small" catchtap="selectOrder" data-id="{{item._id}}">复制ID</button>
+            </view>
+        </block>
+        <button wx:if="{{allOrders.length > 0 && hasMore}}" class="btn-secondary" bindtap="handleFetchAllOrders">加载更多</button>
+    </view>
+
+    <!-- Log List -->
+    <view class="log-list" wx:if="{{activeTab === 3}}">
+        <view class="log-item" wx:for="{{logs}}" wx:key="_id">
+            <view class="log-time">{{item.timestamp}}</view>
+            <view class="log-level {{item.level}}">{{item.level}}</view>
+            <view class="log-msg">{{item.message}}</view>
+            <view class="log-details" wx:if="{{item.details}}">{{item.details}}</view>
+        </view>
+        <view wx:if="{{logs.length === 0}}" class="no-data">暂无日志</view>
+    </view>
+  </view>
+</view>
+
+<view class="login-container" wx:else>
+  <view class="login-box">
+    <view class="login-title">开发者验证</view>
+    <input class="login-input" password type="text" placeholder="请输入密钥" bindinput="inputAuthKey" />
+    <button class="btn-primary" bindtap="checkAuth">进入</button>
+  </view>
+</view>

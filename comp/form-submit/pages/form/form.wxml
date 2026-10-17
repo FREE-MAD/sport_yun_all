@@ -1,0 +1,124 @@
+<!--
+  业务积木：表单提交 - 表单结构（多类型版）
+  根据 config.fields 的 type 字段动态渲染不同控件，业务方无需修改本文件
+  支持 8 种 type: text / number / textarea / phone / date / select / radio / checkbox / switch
+-->
+<view class="form-block">
+  <block wx:for="{{fields}}" wx:key="name">
+    <view class="form-item">
+      <text class="form-label">{{item.label}}<text wx:if="{{item.required}}" class="required">*</text></text>
+
+      <!-- 文本/手机号：input + maxlength 限制 -->
+      <input
+        wx:if="{{item.type === 'text' || item.type === 'phone'}}"
+        class="form-input"
+        type="{{item.type === 'phone' ? 'number' : 'text'}}"
+        maxlength="{{item.maxlength || 140}}"
+        value="{{formData[item.name]}}"
+        data-field="{{item.name}}"
+        data-type="{{item.type}}"
+        bindinput="onInput"
+        placeholder="{{item.placeholder || ('请输入' + item.label)}}"
+      />
+
+      <!-- 数字：input type=digit，配合 min/max 校验 -->
+      <input
+        wx:elif="{{item.type === 'number'}}"
+        class="form-input"
+        type="digit"
+        value="{{formData[item.name]}}"
+        data-field="{{item.name}}"
+        data-type="number"
+        bindinput="onInput"
+        placeholder="{{item.placeholder || ('请输入' + item.label)}}"
+      />
+
+      <!-- 多行文本：textarea -->
+      <textarea
+        wx:elif="{{item.type === 'textarea'}}"
+        class="form-textarea"
+        maxlength="{{item.maxlength || 200}}"
+        value="{{formData[item.name]}}"
+        data-field="{{item.name}}"
+        data-type="textarea"
+        bindinput="onInput"
+        placeholder="{{item.placeholder || ('请输入' + item.label)}}"
+      ></textarea>
+
+      <!-- 日期：picker mode=date -->
+      <picker
+        wx:elif="{{item.type === 'date'}}"
+        mode="date"
+        value="{{formData[item.name]}}"
+        data-field="{{item.name}}"
+        bindchange="onPick"
+      >
+        <view class="form-picker {{formData[item.name] ? '' : 'form-picker-placeholder'}}">{{formData[item.name] || (item.placeholder || '请选择' + item.label)}}</view>
+      </picker>
+
+      <!-- 下拉选择：picker mode=selector，返回 index 需要转 value -->
+      <picker
+        wx:elif="{{item.type === 'select'}}"
+        mode="selector"
+        range="{{item.options}}"
+        range-key="label"
+        value="{{formData[item.name + '_index']}}"
+        data-field="{{item.name}}"
+        bindchange="onPickSelect"
+      >
+        <view class="form-picker {{formData[item.name] ? '' : 'form-picker-placeholder'}}">{{formData[item.name + '_label'] || (item.placeholder || '请选择' + item.label)}}</view>
+      </picker>
+
+      <!-- 单选按钮组 -->
+      <radio-group
+        wx:elif="{{item.type === 'radio'}}"
+        class="form-radio-group"
+        data-field="{{item.name}}"
+        bindchange="onPick"
+      >
+        <label wx:for="{{item.options}}" wx:for-item="opt" wx:key="value" class="form-radio-item">
+          <radio value="{{opt.value}}" checked="{{formData[item.name] === opt.value}}" color="#07c160" />
+          <text class="form-radio-label">{{opt.label}}</text>
+        </label>
+      </radio-group>
+
+      <!-- 多选按钮组：值是数组 -->
+      <checkbox-group
+        wx:elif="{{item.type === 'checkbox'}}"
+        class="form-radio-group"
+        data-field="{{item.name}}"
+        bindchange="onPick"
+      >
+        <label wx:for="{{item.options}}" wx:for-item="opt" wx:key="value" class="form-radio-item">
+          <checkbox value="{{opt.value}}" checked="{{formData[item.name] && formData[item.name].indexOf(opt.value) > -1}}" color="#07c160" />
+          <text class="form-radio-label">{{opt.label}}</text>
+        </label>
+      </checkbox-group>
+
+      <!-- 开关：值是 boolean -->
+      <switch
+        wx:elif="{{item.type === 'switch'}}"
+        checked="{{formData[item.name]}}"
+        color="#07c160"
+        data-field="{{item.name}}"
+        bindchange="onSwitch"
+      />
+
+      <!-- 地图选点：调 wx.chooseLocation，值存对象 {name, address, latitude, longitude} -->
+      <view
+        wx:elif="{{item.type === 'location'}}"
+        class="form-picker {{formData[item.name] && formData[item.name].address ? '' : 'form-picker-placeholder'}}"
+        data-field="{{item.name}}"
+        bindtap="onChooseLocation"
+      >{{(formData[item.name] && (formData[item.name].address || formData[item.name].name)) || (item.placeholder || '点击选择' + item.label)}}</view>
+    </view>
+  </block>
+
+  <!-- 提交按钮：submitting 状态防重复点击 -->
+  <button
+    class="form-submit-btn"
+    loading="{{submitting}}"
+    disabled="{{submitting}}"
+    bindtap="onSubmit"
+  >提交</button>
+</view>

@@ -1,0 +1,1 @@
+.itemRow{display:flex;align-items:center;transition:all .3s ease-in-out;cursor:pointer}.itemRow .icon-box{margin-right:4px}.itemRow:hover{transform:scale(1.1)}

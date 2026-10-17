@@ -1,0 +1,175 @@
+Page({
+  data: {
+    isAuthorized: false,
+    authKey: '',
+    orderId: '',
+    coachOpenid: '',
+    coachId: '',
+    allOrders: [],
+    logs: [],
+    page: 1,
+    hasMore: true,
+    tabs: ['全部', '待处理', '已锁定', '日志'],
+    activeTab: 0
+  },
+
+  onTabChange(e) {
+    const index = e.currentTarget.dataset.index;
+    this.setData({ activeTab: index });
+    // Optional: Auto-fetch if empty
+    if (index === 3 && this.data.logs.length === 0) {
+        this.handleFetchLogs(true);
+    }
+  },
+
+  onLoad() {
+    // Optional: check stored auth to skip login
+    // const isAuth = wx.getStorageSync('dev_auth');
+    // if (isAuth) this.setData({ isAuthorized: true });
+  },
+
+  inputAuthKey(e) {
+    this.setData({ authKey: e.detail.value })
+  },
+
+  checkAuth() {
+    if (this.data.authKey === 'szdx20252026') {
+      this.setData({ isAuthorized: true })
+      wx.showToast({ title: '验证通过', icon: 'success' })
+      // wx.setStorageSync('dev_auth', true); // Uncomment to persist
+    } else {
+      wx.showToast({ title: '密钥错误', icon: 'none' })
+    }
+  },
+
+  inputOrderId(e) { this.setData({ orderId: e.detail.value }) },
+  inputCoachOpenid(e) { this.setData({ coachOpenid: e.detail.value }) },
+  inputCoachId(e) { this.setData({ coachId: e.detail.value }) },
+
+  async handleAdminAssign() {
+    if (!this.data.orderId || !this.data.coachOpenid) {
+      wx.showToast({ title: '缺少必要参数', icon: 'none' })
+      return
+    }
+
+    wx.showLoading({ title: '处理中' })
+    try {
+      const res = await wx.cloud.callFunction({
+        name: 'execution_order',
+        data: {
+          action: 'admin_assign_coach',
+          orderId: this.data.orderId,
+          coachOpenid: this.data.coachOpenid,
+          coachId: this.data.coachId
+        }
+      })
+      
+      wx.hideLoading()
+      if (res.result.code === 0) {
+        wx.showToast({ title: '成功: ' + res.result.msg })
+      } else {
+        wx.showModal({ title: '失败', content: res.result.msg, showCancel: false })
+      }
+    } catch (err) {
+      wx.hideLoading()
+      console.error(err)
+      wx.showToast({ title: '调用失败', icon: 'none' })
+    }
+  },
+  
+  handleClearCache() {
+      wx.clearStorageSync();
+      wx.showToast({ title: '缓存已清理', icon: 'success' });
+  },
+
+  handleRefresh() {
+      if (this.data.activeTab === 3) {
+          this.handleFetchLogs(true);
+      } else {
+          this.handleFetchAllOrders(true);
+      }
+  },
+
+  async handleFetchLogs(isRefresh = false) {
+      if (isRefresh) {
+          this.setData({ logs: [] });
+      }
+      wx.showLoading({ title: '加载日志' });
+      try {
+          const res = await wx.cloud.callFunction({
+              name: 'execution_order',
+              data: {
+                  action: 'admin_logs',
+                  page: 1, // Simple pagination for now
+                  limit: 50
+              }
+          });
+          wx.hideLoading();
+          if (res.result.code === 0) {
+              this.setData({ logs: res.result.data.list });
+          } else {
+              wx.showToast({ title: '日志获取失败', icon: 'none' });
+          }
+      } catch (err) {
+          wx.hideLoading();
+          console.error(err);
+          wx.showToast({ title: '调用失败', icon: 'none' });
+      }
+  },
+
+  async handleFetchAllOrders(isRefresh = false) {
+    if (isRefresh) {
+        this.setData({ page: 1, hasMore: true, allOrders: [] });
+    }
+    if (!this.data.hasMore) return;
+
+    wx.showLoading({ title: '加载中' })
+    try {
+        const res = await wx.cloud.callFunction({
+            name: 'execution_order',
+            data: {
+                action: 'admin_list_all',
+                page: this.data.page,
+                limit: 20
+            }
+        })
+        wx.hideLoading()
+        
+        if (res.result.code === 0) {
+            const newOrders = res.result.data;
+            this.setData({
+                allOrders: this.data.allOrders.concat(newOrders),
+                page: this.data.page + 1,
+                hasMore: newOrders.length === 20
+            });
+            if (newOrders.length === 0 && this.data.page === 1) {
+                wx.showToast({ title: '暂无订单', icon: 'none' })
+            }
+        } else {
+            wx.showToast({ title: '获取失败', icon: 'none' })
+        }
+    } catch (err) {
+        wx.hideLoading()
+        console.error(err)
+        wx.showToast({ title: '调用失败', icon: 'none' })
+    }
+  },
+
+  selectOrder(e) {
+      const orderId = e.currentTarget.dataset.id;
+      wx.setClipboardData({ data: orderId });
+  },
+
+  navigateToDetail(e) {
+      const id = e.currentTarget.dataset.id;
+      const collection = e.currentTarget.dataset.collection;
+      wx.navigateTo({
+          url: `/pages/mine/developer/developer_detailed?id=${id}&collection=${collection}`
+      });
+  },
+
+  copyText(e) {
+      const text = e.currentTarget.dataset.text;
+      wx.setClipboardData({ data: text });
+  }
+})
