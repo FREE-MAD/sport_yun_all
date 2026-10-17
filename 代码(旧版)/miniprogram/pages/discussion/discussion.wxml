@@ -1,0 +1,2342 @@
+<view class="page">
+
+<!-- 顶部区域 -->
+<view class="header">
+  <view class="header-text">
+    <view class="title">运动社区</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+  <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+</view>
+
+  <view class="header-actions">
+    <view class="btn-icon search-icon" bindtap="onSearch"></view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+    <view class="btn-icon publish-icon" bindtap="showPublishModal"></view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+  </view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+
+<!-- 四宫格统计 -->
+<view class="stats-grid">
+  <view class="stat-item">
+    <view class="stat-title">Active Issues</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+    <view class="stat-value">156</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+  </view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+
+  <view class="stat-item">
+    <view class="stat-title">In Progress</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+    <view class="stat-value">89</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+  </view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+
+  <view class="stat-item">
+    <view class="stat-title">Resolved Today</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+    <view class="stat-value">23</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+  </view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+
+  <view class="stat-item">
+    <view class="stat-title">High Priority</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+    <view class="stat-value">34</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+  </view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+
+<!-- 
+
+ -->
+<view class="search-box">
+  <input class="search-input" placeholder="Search issues..." />
+  <view class="search-filter"></view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+
+<!-- 分类 Tab -->
+<!-- 可以横推并与下面绑定 -->
+<!-- 横向滚动 Tabs -->
+<scroll-view class="tabs-wrapper" scroll-x scroll-with-animation>
+  <view class="tabs-center-box">
+    <view class="tabs">
+      <view
+        wx:for="{{tabs}}"
+        wx:key="index"
+        class="tab {{activeTab === index ? 'active' : ''}}"
+        data-index="{{index}}"
+        bindtap="switchTab"
+      >
+        {{item}}
+      </view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+    </view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+  </view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+</scroll-view>
+
+
+
+<!-- 内容区域 -->
+<view class="content">
+
+  <!-- 渲染当前 activeTab 对应的帖子列表 -->
+  <block wx:for="{{posts[activeTab]}}" wx:key="id">
+    <view class="post-card">
+
+      <view class="post-header">
+        <view class="user-info">
+          <view class="avatar">{{item.avatarText}}</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+          <view>
+            <view class="user-name">{{item.nickname}}</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+            <view class="info-line">{{item.time}} · {{item.distance}}</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+          </view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+        </view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+        <view class="status-tag">{{item.status}}</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+      </view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+
+      <view class="tag-box">{{item.tag}}</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+
+      <view class="post-title">{{item.title}}</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+
+      <view class="post-desc">{{item.desc}}</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+
+      <image class="post-img" src="{{item.img}}"></image>
+
+      <view class="post-footer">
+        <view class="action-btn" 
+              bindtap="onLike" 
+              data-post-id="{{item.id}}"
+              data-tab-index="{{activeTab}}"
+              data-post-index="{{index}}">
+          <image class="action-icon {{item.liked ? 'liked' : ''}}" 
+                 src="{{item.liked ? '/images/heart-filled.png' : '/images/heart.png'}}"></image>
+          <text class="action-text">{{item.likes}}</text>
+        </view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+        
+        <view class="action-btn" 
+              bindtap="onComment"
+              data-post-id="{{item.id}}">
+          <image class="action-icon" src="/images/comment.png"></image>
+          <text class="action-text">{{item.comments}}</text>
+        </view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+        
+        <view class="action-btn" 
+              bindtap="onShare"
+              data-post-id="{{item.id}}"
+              data-tab-index="{{activeTab}}"
+              data-post-index="{{index}}">
+          <image class="action-icon" src="/images/share.png"></image>
+          <text class="action-text">{{item.shares}}</text>
+        </view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+        
+        <view class="details-btn" bindtap="onViewDetail" data-post-id="{{item.id}}">详情</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+      </view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+
+    </view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>
+  </block>
+
+</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+</view>
+</view>
+
+</view>
+
+<!-- 发布帖子模态框 -->
+<view class="modal-mask" wx:if="{{showPublishModal}}" bindtap="hidePublishModal">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text class="modal-title">发布新帖子</text>
+      <view class="modal-close" bindtap="hidePublishModal">×</view>
+    </view>
+    
+    <view class="modal-body">
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="请输入标题" 
+               value="{{newPost.title}}"
+               bindinput="onPostTitleInput" />
+      </view>
+      
+      <view class="form-group">
+        <textarea class="form-textarea" 
+                  placeholder="分享你的运动生活..." 
+                  value="{{newPost.content}}"
+                  bindinput="onPostContentInput" />
+      </view>
+      
+      <view class="form-group">
+        <input class="form-input" 
+               placeholder="标签（可选）" 
+               value="{{newPost.tag}}"
+               bindinput="onPostTagInput" />
+      </view>
+      
+      <view class="form-group">
+        <view class="image-upload">
+          <view class="upload-btn" bindtap="chooseImage" wx:if="{{newPost.images.length < 3}}">
+            <image class="upload-icon" src="/images/add.png"></image>
+            <text class="upload-text">添加图片</text>
+          </view>
+          
+          <view class="image-list">
+            <view class="image-item" wx:for="{{newPost.images}}" wx:key="*this">
+              <image class="image" src="{{item}}" mode="aspectFill"></image>
+              <view class="image-delete" bindtap="deleteImage" data-index="{{index}}">×</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hidePublishModal">取消</button>
+      <button class="btn-submit" bindtap="submitPost">发布</button>
+    </view>
+  </view>
+</view>

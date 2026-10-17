@@ -1,0 +1,52 @@
+<view class="page">
+
+<!-- 顶部背景 + 用户信息 -->
+<view class="header">
+  <view class="header-info">
+    <view class="city">当前城市</view>
+
+    <view class="stats">
+      
+    </view>
+
+    <view class="edit-btn">
+      编辑资料
+      <text class="edit-icon">✎</text>
+    </view>
+  </view>
+</view>
+
+
+<!-- 主体模块列表 -->
+<view class="section">
+  <block wx:for="{{cards}}" wx:key="title">
+  <view class="item-wrapper">
+    <view class="card" bindtap="toggleCard" data-index="{{index}}">
+      <view class="left">
+        <text class="icon">{{item.icon}}</text>
+        <text class="title">{{item.title}}</text>
+      </view>
+
+      <view class="{{currentIndex === index ? 'arrow rotate' : 'arrow'}}">⌄</view>
+    </view>
+
+    <!-- 展开内容 -->
+    <view class="expand-box" wx:if="{{currentIndex === index}}">
+      <view class="expand-inner">
+        <!-- 自定义内容 -->
+        <view class="label">细节说明(用js写)</view>
+        <textarea placeholder="请输入内容..." class="textarea"></textarea>
+        <!-- 材料上传 -->
+      </view>
+    </view>
+  </view>
+  </block>
+
+</view>
+<!-- 进度区 -->
+<view class="">
+  
+</view>
+
+
+</view>

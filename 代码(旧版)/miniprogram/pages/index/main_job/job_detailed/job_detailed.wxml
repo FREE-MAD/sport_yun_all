@@ -1,0 +1,125 @@
+<view class="page">
+
+<!-- 加载中 -->
+<view wx:if="{{loading}}" class="loading">
+  加载中...
+</view>
+
+<!-- 内容区 -->
+<view wx:else>
+
+  <!-- 标题和状态 -->
+  <view class="card title-card">
+    <view class="title-row">
+      <text class="title">{{detail.title||'未设置标题'}}</text>
+      <view class="status-badge status-{{detail.status}}">
+        {{detail.statusText}}
+      </view>
+    </view>
+    <text class="price">¥ {{detail.price}}</text>
+  </view>
+
+  <!-- 基本信息 -->
+  <view class="card info-card">
+    <view class="row">
+      <text class="label">订单状态</text>
+      <text class="value status-text">{{detail.statusText}}</text>
+    </view>
+    <view class="row">
+      <text class="label">发布人</text>
+      <text class="value">{{detail.publisher_Name || '匿名'}}</text>
+    </view>
+
+    <view wx:if="{{detail.acceptorId}}" class="row">
+      <text class="label">接取人</text>
+      <text class="value">{{detail.acceptorName || detail.acceptor_Name || '待确认'}}</text>
+    </view>
+
+    <view class="row">
+      <text class="label">发布时间</text>
+      <text class="value">{{detail.createdAtFormatted}}</text>
+    </view>
+
+    <view wx:if="{{detail.acceptedAt}}" class="row">
+      <text class="label">接取时间</text>
+      <text class="value">{{detail.acceptedAtFormatted}}</text>
+    </view>
+
+    <view wx:if="{{detail.startedAt}}" class="row">
+      <text class="label">开始时间</text>
+      <text class="value">{{detail.startedAtFormatted}}</text>
+    </view>
+
+    <view wx:if="{{detail.completedAt}}" class="row">
+      <text class="label">完成时间</text>
+      <text class="value">{{detail.completedAtFormatted}}</text>
+    </view>
+  </view>
+
+  <!-- 描述 -->
+  <view class="card desc-card">
+    <view class="card-title">任务描述</view>
+    <text class="desc">{{detail.desc || detail.description}}</text>
+  </view>
+
+  <!-- 意向选择 (教练) -->
+  <view wx:if="{{showIntentSelection}}" class="card intent-card">
+     <view class="card-title">接单意向</view>
+     <view class="intent-selection">
+         <button class="intent-btn accept" bindtap="handleAcceptIntent">我愿意接单</button>
+         <button class="intent-btn reject" bindtap="handleRejectIntent">我不愿意接单</button>
+     </view>
+  </view>
+
+  <!-- 教练意愿展示 (所有人可见) -->
+  <view wx:if="{{detail.Willing_coach}}" class="card intent-card">
+     <view class="card-title">教练接单意向 ({{(detail.Willing_coach.willing.length || 0) + (detail.Willing_coach.unwilling.length || 0)}})</view>
+     
+     <!-- 愿意接单 -->
+     <view wx:if="{{detail.Willing_coach.willing && detail.Willing_coach.willing.length > 0}}" style="margin-bottom: 20rpx;">
+         <view class="intention-subtitle" style="font-size: 24rpx; color: #666; margin-bottom: 10rpx;">愿意接单 ({{detail.Willing_coach.willing.length}})</view>
+         <view wx:for="{{detail.Willing_coach.willing}}" wx:key="openid" class="intent-row" style="display: flex; align-items: center; padding: 10rpx 0; border-bottom: 1rpx dashed #eee;">
+             <image src="{{item.userInfo.avatarUrl || '/images/icons/avatar.png'}}" style="width: 40rpx; height: 40rpx; border-radius: 50%; margin-right: 10rpx;"></image>
+             <text style="font-size: 26rpx;">{{item.userInfo.nickName || '教练 ' + (index + 1)}}</text>
+         </view>
+     </view>
+
+     <!-- 不愿意接单 -->
+     <view wx:if="{{detail.Willing_coach.unwilling && detail.Willing_coach.unwilling.length > 0}}">
+         <view class="intention-subtitle" style="font-size: 24rpx; color: #666; margin-bottom: 10rpx;">拒绝接单 ({{detail.Willing_coach.unwilling.length}})</view>
+         <view wx:for="{{detail.Willing_coach.unwilling}}" wx:key="openid" class="intent-row" style="display: flex; align-items: center; justify-content: space-between; padding: 10rpx 0; border-bottom: 1rpx dashed #eee;">
+             <view style="display: flex; align-items: center;">
+                 <image src="{{item.userInfo.avatarUrl || '/images/icons/avatar.png'}}" style="width: 40rpx; height: 40rpx; border-radius: 50%; margin-right: 10rpx;"></image>
+                 <text style="font-size: 26rpx; color: #999;">{{item.userInfo.nickName || '教练 ' + (index + 1)}}</text>
+             </view>
+             <text style="font-size: 24rpx; color: #999;">{{item.rejectReason || '拒绝'}}</text>
+         </view>
+     </view>
+  </view>
+
+  <!-- 订单操作按钮 -->
+  <view wx:if="{{statusActions.length > 0}}" class="card actions-card">
+    <view class="card-title">订单操作</view>
+    <view class="actions-grid">
+      <button 
+        wx:for="{{statusActions}}" 
+        wx:key="type"
+        class="action-btn action-{{item.type}}"
+        bindtap="handleStatusAction"
+        data-action="{{item.action}}"
+      >
+        {{item.text}}
+      </button>
+    </view>
+  </view>
+
+  <!-- 底部操作 -->
+  <view class="footer">
+    <button class="chat-btn" bindtap="onlook">
+      私信沟通
+    </button>
+  </view>
+
+</view>
+
+</view>

@@ -1,0 +1,209 @@
+<view class="container">
+  <!-- 顶部安全区 -->
+  <view class="safe-top" style="height: {{topSafe}}px"></view>
+
+  <!-- 顶部导航栏 (原侧边栏) -->
+  <scroll-view class="top-tabbar" scroll-x="true" enable-flex="true">
+    <view class="tab-item {{publishType==='附近课程'?'active':''}}" 
+          bindtap="onPublishTab" data-tab="附近课程">附近课程</view>
+    <view class="tab-item {{publishType==='发布看看'?'active':''}}" 
+          bindtap="onPublishTab" data-tab="发布看看">发布看看</view>
+    <view class="tab-item {{publishType==='指定教练员'?'active':''}}" 
+          bindtap="onPublishTab" data-tab="指定教练员">指定教练员</view>
+  </scroll-view>
+
+  <!-- 主布局：内容区 -->
+  <view class="main-layout">
+    <!-- 内容区 -->
+    <scroll-view class="content-area" scroll-y="true" enable-flex="true">
+      
+      <!-- 顶部说明 -->
+      <view class="tab-desc">
+        <text wx:if="{{publishType==='附近课程'}}">浏览周边正在寻找拼友的家长，快速组队。</text>
+        <text wx:elif="{{publishType==='发布看看'}}">发布您的个性化运动需求，让教练或球友主动联系您。</text>
+        <text wx:elif="{{publishType==='指定教练员'}}">已知心仪教练？直接输入ID发送专属邀请。</text>
+      </view>
+
+      <!-- 1. 附近课程列表 -->
+      <view wx:if="{{publishType==='附近课程'}}" class="list-wrapper">
+        <block wx:if="{{nearbyList.length > 0}}">
+          <view class="nearby-item" wx:for="{{nearbyList}}" wx:key="id" bindtap="onNearbyItemTap" data-id="{{item.id}}">
+            <image class="nearby-avatar" src="{{item.avatar || '/images/icons/avatar.png'}}" mode="aspectFill"></image>
+            <view class="nearby-content">
+              <view class="nearby-name">{{item.name}}</view>
+              <view class="nearby-desc">{{item.desc}}</view>
+            </view>
+            <view class="nearby-distance">{{item.distance}}</view>
+          </view>
+        </block>
+        <view wx:else class="empty-tip">暂无等待拼团的家长</view>
+      </view>
+
+      <!-- 2. 发布看看 -->
+      <view wx:if="{{publishType==='发布看看'}}" class="form-wrapper">
+        <!-- 体育目标选择 -->
+        <view class="form-section">
+          <view class="section-title">体育目标选择</view>
+          
+          <!-- 课堂列表 (使用scroll-view横向滚动) -->
+          <scroll-view class="class-list" scroll-x="true" enable-flex="true">
+            <block wx:for="{{classTypes}}" wx:key="id">
+              <view class="class-card {{currentClassId === item.id ? 'active' : ''}}">
+                <!-- 卡片头部 (点击选中) -->
+                <view class="class-card-header" bindtap="onSelectClass" data-id="{{item.id}}">
+                  <view class="class-info">
+                    <view class="class-name">{{item.name}}</view>
+                    <view class="class-desc">{{item.brief}}</view>
+                  </view>
+                </view>
+
+                <!-- 展开/收起按钮 -->
+                <view class="class-sub-toggle" catchtap="onToggleClassExpand" data-id="{{item.id}}">
+                  <text>{{expandedClassId === item.id ? '收起详情' : '展开详情'}}</text>
+                  <text class="arrow {{expandedClassId === item.id ? 'up' : 'down'}}">▼</text>
+                </view>
+
+                <!-- 子项目列表 (展开时显示) -->
+                <view class="class-sub-list" wx:if="{{expandedClassId === item.id}}">
+                  <block wx:if="{{item.subItems && item.subItems.length}}">
+                    <view class="class-sub-item {{selectedSubName === sub && currentClassId === item.id ? 'active' : ''}}" 
+                          wx:for="{{item.subItems}}" wx:for-item="sub" wx:key="*this" 
+                          bindtap="onSelectSubItem" data-parent-id="{{item.id}}" data-name="{{sub}}">
+                      {{sub}}
+                    </view>
+                  </block>
+                  <block wx:else>
+                    <view class="class-sub-item {{currentClassId === item.id ? 'active' : ''}}" 
+                          bindtap="onSelectSubItem" data-parent-id="{{item.id}}" data-name="{{item.name}}">
+                      选择 {{item.name}}
+                    </view>
+                  </block>
+                </view>
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+
+        <!-- 课程介绍 (选中后显示) -->
+        <view class="form-section" wx:if="{{currentClass}}">
+          <view class="section-title">课程介绍</view>
+          <view class="course-intro-card">
+            <view class="course-current-name">
+              当前课程：{{currentClass.name}}
+              <text wx:if="{{selectedSubName}}"> - {{selectedSubName}}</text>
+            </view>
+            <scroll-view class="course-images" scroll-x="true" enable-flex="true">
+              <image class="course-image" wx:for="{{currentClass.images}}" wx:key="*this" src="{{item}}" mode="aspectFill"></image>
+            </scroll-view>
+            <view class="course-plan">
+              <view class="plan-title">课程计划</view>
+              <view class="plan-text">{{currentClass.planText}}</view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 填写表单 -->
+        <form bindsubmit="onSubmit">
+          <view class="form-section">
+            <view class="section-title">位置和时间</view>
+            
+            <view class="form-item">
+              <text class="label required">任务位置</text>
+              <view class="picker-view" bindtap="chooseLocation">
+                <text class="{{form.location?'':'placeholder'}}">{{form.location || '请选择位置'}}</text>
+                <text class="arrow">›</text>
+              </view>
+            </view>
+
+            <view class="form-item">
+              <text class="label required">日期要求</text>
+              <picker mode="date" bindchange="onDateChange">
+                <view class="picker-view">
+                  <text class="{{form.ing_day_time?'':'placeholder'}}">{{form.ing_day_time || '请选择日期'}}</text>
+                  <text class="arrow">›</text>
+                </view>
+              </picker>
+            </view>
+
+            <view class="form-item">
+              <text class="label required">任务频次</text>
+              <input class="input" placeholder="如：每周2次" value="{{form.frequency}}" data-field="frequency" bindinput="onInput"/>
+            </view>
+          </view>
+
+          <view class="form-section">
+            <view class="section-title">目标详情 (可选)</view>
+            <view class="form-item">
+              <text class="label">任务标题</text>
+              <input class="input" placeholder="请输入任务标题" value="{{form.title}}" data-field="title" bindinput="onInput"/>
+            </view>
+            <view class="form-item">
+              <text class="label">任务分类</text>
+              <picker range="{{categoryList}}" bindchange="onCategoryChange">
+                <view class="picker-view">
+                  <text class="{{form.category?'':'placeholder'}}">{{form.category || '请选择分类'}}</text>
+                  <text class="arrow">›</text>
+                </view>
+              </picker>
+            </view>
+            <view class="form-item">
+              <text class="label">任务描述</text>
+              <textarea class="textarea" auto-height placeholder="请详细描述任务内容" value="{{form.description}}" data-field="description" bindinput="onInput"></textarea>
+            </view>
+            <view class="form-item">
+              <text class="label">价格区间</text>
+              <input class="input" type="digit" placeholder="请填写价格区间" value="{{form.price_interval}}" data-field="price_interval" bindinput="onInput"/>
+            </view>
+          </view>
+
+          <view class="form-section">
+            <view class="section-title">联系方式</view>
+            <view class="form-item">
+              <text class="label required">联系方式</text>
+              <input class="input" placeholder="手机号 / 微信号" value="{{form.contact}}" data-field="contact" bindinput="onInput"/>
+            </view>
+          </view>
+
+          <view class="form-section">
+            <view class="section-title">拼团意向</view>
+            <view class="form-item switch-item">
+              <text class="label">愿意与其他小朋友一起上课</text>
+              <switch checked="{{form.accept_group}}" color="#1976d2" data-field="accept_group" bindchange="onInput"/>
+            </view>
+          </view>
+
+          <view class="submit-area">
+            <button class="submit-btn" form-type="submit">发布任务</button>
+          </view>
+        </form>
+      </view>
+
+      <!-- 3. 指定教练员 -->
+      <view wx:if="{{publishType==='指定教练员'}}" class="form-wrapper">
+        <form bindsubmit="onSubmit">
+          <view class="form-section">
+            <view class="section-title">指定教练员信息</view>
+            <view class="form-item">
+              <text class="label required">教练员ID</text>
+              <input class="input" placeholder="请输入教练员ID" value="{{form.coach_id}}" data-field="coach_id" bindinput="onInput"/>
+            </view>
+            <view class="form-item">
+              <text class="label">备注信息</text>
+              <textarea class="textarea" auto-height placeholder="给教练员的留言" value="{{form.description}}" data-field="description" bindinput="onInput"></textarea>
+            </view>
+          </view>
+          <view class="submit-area">
+            <button class="submit-btn" form-type="submit">发送邀请</button>
+          </view>
+        </form>
+      </view>
+
+    </scroll-view>
+  </view>
+
+  <!-- 全屏遮罩 (用于加载等) -->
+  <view wx:if="{{showCover}}" class="cover-mask">
+    <view class="loading-spinner"></view>
+    <text>加载中...</text>
+  </view>
+</view>

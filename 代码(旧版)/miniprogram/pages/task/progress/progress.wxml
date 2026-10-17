@@ -1,0 +1,101 @@
+<view class="page">
+  <view class="header">
+  <view class="header-info">
+    <view class="city">保持微笑</view>
+
+    <view class="stats">
+      
+    </view>
+
+    <view class="edit-btn">
+      记录心情
+      <text class="edit-icon">✎</text>
+    </view>
+  </view>
+</view>
+
+<!-- Tabs -->
+<view class="tab-card">
+  <view class="tab-bar">
+    <view
+      wx:for="{{tabs}}"
+      wx:for-item="item"
+      wx:for-index="index"
+      wx:key="status"
+      class="tab-item {{currentTab === index ? 'active' : ''}}"
+      data-index="{{index}}"
+      bindtap="onTabChange"
+    >
+      {{item.label}}
+    </view>
+  </view>
+</view>
+
+<!-- Task List -->
+<view class="list">
+
+  <view
+    wx:for="{{tasks}}"
+    wx:for-item="item"
+    wx:key="id"
+    class="card"
+  >
+
+    <!-- Header -->
+    <view class="card-header">
+      <text class="title">{{item.title}}</text>
+      <view class="status status-{{item.status}}">
+        {{item.statusText}}
+      </view>
+    </view>
+
+    <!-- Meta -->
+    <view class="meta">
+      <text>¥{{item.price}}</text>
+      <text>📍 {{item.location}}</text>
+      <text>🕒 {{item.deadline}}</text>
+    </view>
+
+    <!-- Desc -->
+    <view class="desc">{{item.description}}</view>
+
+    <!-- User -->
+    <view wx:if="{{item.otherUser}}" class="user">
+      <image class="avatar" src="{{item.otherUser.avatar}}" />
+      <view class="user-info">
+        <text class="name">{{item.otherUser.name}}</text>
+        <text class="role">
+          {{item.userRole === 'publisher' ? '发布者' : '接受者'}}
+        </text>
+      </view>
+      <view
+        class="contact"
+        bindtap="onContactUser"
+        data-id="{{item.otherUser.id}}"
+      >
+        联系
+      </view>
+    </view>
+
+    <!-- Action -->
+    <view class="action-row">
+      <button
+        class="primary"
+        bindtap="onViewDetail"
+        data-id="{{item.id}}"
+      >
+        查看详情与操作
+      </button>
+    </view>
+
+  </view>
+
+  <!-- Empty -->
+  <view wx:if="{{tasks.length === 0}}" class="empty">
+    <text class="icon">📋</text>
+    <text>暂无{{tabs[currentTab].label}}的任务</text>
+  </view>
+
+</view>
+
+</view>

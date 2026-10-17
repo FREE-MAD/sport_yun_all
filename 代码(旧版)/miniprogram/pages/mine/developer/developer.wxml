@@ -1,0 +1,17 @@
+<view class="container" wx:if="{{isAuthorized}}">
+  <view class="header">开发者工具</view>
+  
+  <view class="section">
+    <view class="section-title">其他工具</view>
+    <button class="btn-secondary" bindtap="handleClearCache">清理缓存</button>
+  </view>
+
+</view>
+
+<view class="login-container" wx:else>
+  <view class="login-box">
+    <view class="login-title">开发者验证</view>
+    <input class="login-input" password type="text" placeholder="请输入密钥" bindinput="inputAuthKey" />
+    <button class="btn-primary" bindtap="checkAuth">进入</button>
+  </view>
+</view>

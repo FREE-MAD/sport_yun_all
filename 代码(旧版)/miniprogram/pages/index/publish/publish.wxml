@@ -1,0 +1,70 @@
+<!--pages/index/publish/publish.wxml-->
+<view class="publish-page">
+  <!-- 顶部标题 -->
+  <view class="header">
+    <text class="header-title">发布事务</text>
+  </view>
+
+  <!-- 表单区域 -->
+  <form class="publish-form" bindsubmit="submitForm">
+    <!-- 事务标题 -->
+    <view class="form-item">
+      <text>事务标题</text>
+      <input name="title" placeholder="请输入事务标题" value="{{title}}" bindinput="onInputTitle"/>
+    </view>
+
+    <!-- 事务描述 -->
+    <view class="form-item">
+      <text>事务描述</text>
+      <textarea name="desc" placeholder="请输入事务描述" value="{{desc}}" bindinput="onInputDesc"/>
+    </view>
+
+    <!-- 联系方式 -->
+    <view class="form-item">
+      <text>联系方式</text>
+      <input name="contact" placeholder="请输入联系方式" value="{{contact}}" bindinput="onInputContact"/>
+    </view>
+
+    <!-- 事务类型（单选） -->
+    <view class="form-item">
+      <text>事务类型</text>
+      <radio-group bindchange="onTypeChange">
+        <label class="radio-label">
+          <radio value="兼职" checked="{{type==='兼职'}}"/> 兼职
+        </label>
+        <label class="radio-label">
+          <radio value="求助" checked="{{type==='求助'}}"/> 求助
+        </label>
+        <label class="radio-label">
+          <radio value="其他" checked="{{type==='其他'}}"/> 其他
+        </label>
+      </radio-group>
+    </view>
+
+    <!-- 日期选择 -->
+    <view class="form-item">
+      <text>截止日期</text>
+      <picker mode="date" value="{{date}}" bindchange="onDateChange">
+        <view class="picker">{{date || '请选择日期'}}</view>
+      </picker>
+    </view>
+
+    <!-- 图片上传占位 -->
+    <view class="form-item">
+      <text>上传图片</text>
+      <view class="upload-box" bindtap="chooseImage">
+        <text>点击上传图片</text>
+      </view>
+      <view class="image-preview">
+        <block wx:for="{{images}}" wx:key="index">
+          <image src="{{item}}" mode="aspectFill"/>
+        </block>
+      </view>
+    </view>
+
+    <!-- 提交按钮 -->
+    <view class="form-item submit-btn">
+      <button formType="submit">发布事务</button>
+    </view>
+  </form>
+</view>

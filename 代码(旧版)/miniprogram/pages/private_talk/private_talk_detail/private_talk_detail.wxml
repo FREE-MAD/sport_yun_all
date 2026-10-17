@@ -1,0 +1,128 @@
+<view class="chat-container">
+
+  <!-- 顶部导航栏 -->
+  <view class="chat-header">
+    <view class="header-left" bindtap="goBack"><text>←</text></view>
+
+    <view class="header-center">
+      <view class="user-avatar">
+        <block wx:if="{{targetUser.avatar}}">
+          <image class="avatar-img" src="{{targetUser.avatar}}" mode="aspectFill"></image>
+        </block>
+        <block wx:else>{{targetUser.nickname ? targetUser.nickname.charAt(0) : 'TA'}}</block>
+      </view>
+      <view class="user-info">
+        <view class="user-name">{{targetUser ? targetUser.nickname : '聊天对象'}}</view>
+        <view class="user-status">{{targetUser && targetUser.role ? targetUser.role : '用户'}}</view>
+      </view>
+    </view>
+
+    <view class="header-right" bindtap="showMoreActions"><text>⋮</text></view>
+  </view>
+
+  <!-- 协商完成表单弹窗 -->
+  <page-container 
+    show="{{showNegotiationForm}}" 
+    round="true" 
+    overlay="true" 
+    position="bottom"
+    custom-style="height: 60%; background-color: #f8f8f8; border-radius: 20rpx 20rpx 0 0;"
+    bind:afterleave="onFormClose"
+  >
+    <view class="form-container">
+      <view class="form-header">
+        <text class="form-title">完成协商 & 生成订单</text>
+        <view class="close-btn" bindtap="closeNegotiationForm">×</view>
+      </view>
+      
+      <view class="form-content">
+        <view class="form-item">
+          <text class="label">单节课时费 (元)</text>
+          <input class="input" type="digit" placeholder="请输入金额" model:value="{{formPrice}}" />
+        </view>
+        
+        <view class="form-item">
+          <text class="label">总课节数 (节)</text>
+          <input class="input" type="number" placeholder="请输入课节数" model:value="{{formCount}}" />
+        </view>
+        
+        <view class="form-item">
+          <text class="label">特别指引/备注</text>
+          <textarea class="textarea" placeholder="请输入给家长的特别指引或备注信息..." model:value="{{formInstructions}}"></textarea>
+        </view>
+
+        <view class="form-tips">
+          <text>提交后将生成正式订单并锁定，请仔细核对。</text>
+        </view>
+      </view>
+
+      <view class="form-footer">
+        <button class="submit-btn" bindtap="submitNegotiation">确认提交</button>
+      </view>
+    </view>
+  </page-container>
+
+  <!-- 消息滚动区 -->
+  <scroll-view
+  class="chat-messages"
+  scroll-y="true"
+  scroll-with-animation="true"
+  scroll-top="{{scrollTop}} "
+ 
+>
+    <block wx:for="{{messages}}" wx:key="_id">
+      <!-- 时间分隔 -->
+      <view class="time-divider" wx:if="{{item.showTime}}">
+        <text class="time-text">{{item.timeText}}</text>
+      </view>
+
+      <!-- 消息项 -->
+      <view class="message-item {{item.fromSelf ? 'sent' : 'received'}}">
+        <!-- 对方头像 -->
+        <view class="message-avatar" wx:if="{{!item.fromSelf}}">
+          <block wx:if="{{item.avatar}}">
+            <image class="avatar-img" src="{{item.avatar}}" mode="aspectFill"></image>
+          </block>
+          <block wx:elif="{{targetUser.avatar}}">
+             <image class="avatar-img" src="{{targetUser.avatar}}" mode="aspectFill"></image>
+          </block>
+          <block wx:else>{{item.sender ? item.sender.charAt(0) : (targetUser.nickname ? targetUser.nickname.charAt(0) : 'TA')}}</block>
+        </view>
+
+        <!-- 消息内容 -->
+        <view class="message-content">
+          <view class="sender-name" wx:if="{{!item.fromSelf && item.sender}}">{{item.sender}}</view>
+          <view class="message-bubble" wx:if="{{item.contentType==='text'}}">{{item.content}}</view>
+          <view class="message-bubble" wx:if="{{item.contentType==='image'}}">[图片消息]</view>
+          <view class="message-bubble" wx:if="{{item.contentType==='voice'}}">[语音 {{item.duration}}'' ]</view>
+        </view>
+
+        <!-- 自己头像 -->
+        <view class="message-avatar" wx:if="{{item.fromSelf}}">我</view>
+      </view>
+    </block>
+  </scroll-view>
+
+  <!-- 底部输入栏 -->
+  <view class="chat-input-bar">
+    <view class="input-left">
+      <text bindtap="toggleEmoji">😊</text>
+      <text bindtap="showMoreFunctions">＋</text>
+    </view>
+
+    <view class="input-center">
+      <input
+        placeholder="说点什么..."
+        value="{{inputText}}"
+        bindinput="onInputChange"
+        bindconfirm="sendMessage"
+        confirm-type="send"
+      />
+    </view>
+
+    <view class="input-right">
+      <button bindtap="sendMessage">发送</button>
+    </view>
+  </view>
+
+</view>

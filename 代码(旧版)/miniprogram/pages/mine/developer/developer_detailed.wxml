@@ -1,0 +1,43 @@
+<view class="container">
+  <view class="header-row">
+    <view class="header">详情信息 ({{collection}})</view>
+    <view class="btn-group">
+      <view class="action-btn manual-btn" bindtap="showManualAssign">手动指派</view>
+      <view class="refresh-btn" bindtap="onRefresh">刷新</view>
+    </view>
+  </view>
+
+  <block wx:if="{{!loading}}">
+    
+    <view class="section-block" wx:if="{{willingList && willingList.length > 0}}">
+      <view class="section-title">候选教练 ({{willingList.length}})</view>
+      <view class="willing-item" wx:for="{{willingList}}" wx:key="openid">
+        <view class="willing-info">
+          <view class="willing-name">{{item.displayParams.nickname || item.nickname || 'Unknown Coach'}}</view>
+          <view class="willing-id">{{item.openid}}</view>
+        </view>
+        <view class="btn-assign" wx:if="{{!acceptorOpenid}}" bindtap="handleAssignCoach" data-coach="{{item}}">派单</view>
+        <view class="status-assigned" wx:elif="{{item.openid === acceptorOpenid}}">平台已派单</view>
+        <view class="status-not-assigned" wx:else>未选中</view>
+      </view>
+    </view>
+
+    <view class="section-title" wx:if="{{orderData.length > 0}}">详细数据</view>
+    <view class="info-item" wx:for="{{orderData}}" wx:key="key">
+      <view class="label-row">
+        <text class="label">{{item.key}}</text>
+        <view class="copy-btn" data-text="{{item.value}}" bindtap="copyText">复制</view>
+      </view>
+      <text class="value" user-select>{{item.value}}</text>
+    </view>
+  </block>
+
+  <view wx:if="{{loading}}" class="loading">
+    <view class="loading-spinner"></view>
+    <text>加载中...</text>
+  </view>
+
+  <view wx:if="{{!loading && orderData.length === 0}}" class="empty-state">
+    暂无数据
+  </view>
+</view>

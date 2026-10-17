@@ -1,0 +1,211 @@
+/* 页面整体 */
+.page {
+  background: #f5f7f8;
+  min-height: 100vh;
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+
+/* 顶部 hero */
+.hero {
+  width: calc(100% + 40rpx); /* Compensate for parent padding */
+  margin: -20rpx -20rpx 30rpx -20rpx; /* Pull to edges */
+  box-sizing: border-box;
+
+  background: linear-gradient(180deg, #0BC86C 0%, #0AAE5F 100%);
+  padding: 120rpx 40rpx 80rpx; /* Increased height */
+  border-radius: 0 0 30rpx 30rpx;
+  color: #fff;
+  box-shadow: 0 10rpx 20rpx rgba(11, 200, 108, 0.2);
+}
+
+.hero-title {
+  font-size: 40rpx;
+  font-weight: 700;
+  text-shadow: 0 2rpx 4rpx rgba(0,0,0,0.1);
+}
+.hero-sub {
+  margin-top: 10rpx;
+  font-size: 26rpx;
+  opacity: .9;
+}
+
+/* 指标区（两列布局，无 @media） */
+.metrics {
+  /* margin-top: -20rpx; Removed negative margin to avoid clash with new hero spacing */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+  box-sizing: border-box;
+}
+
+.metric {
+  flex: 0 0 48%;
+  background:#fff;
+  border-radius: 20rpx;
+  padding: 20rpx 22rpx;
+  box-shadow: 0 4rpx 14rpx rgba(0,0,0,0.05);
+  min-height: 60rpx;
+  margin-bottom: 14rpx;
+  box-sizing: border-box;
+}
+.metric-label {
+  font-size: 24rpx;
+  color:#7b8a89;
+}
+.metric-num {
+  margin-top: 6rpx;
+  font-size: 36rpx;
+  font-weight: 700;
+  color:#172423;
+}
+
+/* 极窄屏（JS 动态控制） */
+.metric.full {
+  flex-basis: 100%;
+}
+
+/* 整体搜索卡片容器 */
+.search-card {
+  background:#fff;
+  padding:26rpx 26rpx 18rpx;
+  border-radius:30rpx;
+  box-shadow:0 6rpx 20rpx rgba(0,0,0,0.05);
+  margin-top:26rpx;
+  margin-bottom:20rpx;
+  box-sizing:border-box;
+}
+
+/* 保证内部间距协调 */
+.search-row {
+  display:flex;
+  gap:20rpx;
+  margin-bottom:22rpx;
+}
+
+.search {
+  flex:1;
+  background:#f6f8f8;
+  border-radius:20rpx;
+  padding:14rpx 20rpx;
+}
+
+.search-input {
+  font-size:28rpx;
+}
+
+.filter-btn {
+  width:80rpx;
+  height:80rpx;
+  background:#f6f8f8;
+  border-radius:20rpx;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.filter-btn .iconfont {
+  font-size:40rpx;
+  color:#6e7c7c;
+}
+
+/* chips */
+.chips {
+  white-space:nowrap;
+  margin-top:6rpx;
+}
+
+.chip {
+  display:inline-block;
+  padding:16rpx 32rpx;
+  border-radius:999rpx;
+  background:#f6f8f8;
+  margin-right:18rpx;
+  font-size:26rpx;
+  color:#7b8a89;
+}
+
+.chip.active {
+  background:linear-gradient(90deg,#0BC86C,#0AAE5F);
+  color:#fff;
+  box-shadow:0 6rpx 18rpx rgba(11,200,108,0.18);
+}
+/* 列表 */
+.list {
+  margin-top: 26rpx;
+}
+
+.card {
+  background:#fff;
+  border-radius:30rpx;
+  padding:26rpx;
+  display:flex;
+  gap:20rpx;
+  box-shadow: 0 6rpx 20rpx rgba(0,0,0,0.04);
+  margin-bottom: 26rpx;
+}
+
+.avatar {
+  width:90rpx;
+  height:90rpx;
+  border-radius:50%;
+  background:#0BC86C;
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:32rpx;
+  font-weight:700;
+}
+
+.card-body {
+  flex:1;
+}
+.card-title {
+  font-weight:700;
+  font-size:32rpx;
+}
+.card-sub {
+  margin-top: 6rpx;
+  font-size:26rpx;
+  color:#7b8a89;
+}
+
+.meta {
+  margin-top: 8rpx;
+  font-size:24rpx;
+  color:#7b8a89;
+  display:flex;
+  gap:8rpx;
+}
+
+/* 价格 + 接单按钮 */
+.price-area {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:10rpx;
+}
+.price {
+  font-size:36rpx;
+  font-weight:800;
+}
+.accept-btn {
+  background:#0BC86C;
+  color:#fff;
+  border-radius:999rpx;
+  padding:18rpx 40rpx;
+  font-size:26rpx;
+  box-shadow:0 8rpx 20rpx rgba(11,200,108,0.12);
+  width:90%;
+  max-width:260rpx;
+}
+
+/* 空页面 */
+.empty {
+  text-align:center;
+  padding:60rpx 0;
+  color:#7b8a89;
+  font-size:26rpx;
+}

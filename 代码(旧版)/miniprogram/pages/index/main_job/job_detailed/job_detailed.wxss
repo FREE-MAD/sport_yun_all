@@ -1,0 +1,202 @@
+.page {
+  min-height: 100vh;
+  background: #f6f7fb;
+  padding-bottom: 120rpx;
+}
+
+/* 加载 */
+.loading {
+  text-align: center;
+  padding: 200rpx 0;
+  color: #888;
+}
+
+/* 卡片通用 */
+.card {
+  background: #fff;
+  margin: 24rpx;
+  padding: 32rpx;
+  border-radius: 24rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0,0,0,0.05);
+}
+
+/* 标题卡 */
+.title-card {
+  margin-bottom: 20rpx;
+}
+
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+/* 状态标签 */
+.status-badge {
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  color: #fff;
+  font-weight: bold;
+}
+
+.status-pending {
+  background: #ff9500;
+}
+
+.status-accepted {
+  background: #007aff;
+}
+
+.status-in_progress {
+  background: #34c759;
+}
+
+.status-completed {
+  background: #5856d6;
+}
+
+.status-after_sales {
+  background: #ff3b30;
+}
+
+.status-cancelled {
+  background: #8e8e93;
+}
+
+.status-text {
+  color: #333;
+  font-weight: bold;
+}
+
+/* 操作卡片 */
+.actions-card {
+  margin-bottom: 160rpx;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+}
+
+.action-btn {
+  padding: 20rpx;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+}
+
+.action-accept {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+}
+
+.action-start {
+  background: linear-gradient(135deg, #2196F3, #1976D2);
+}
+
+.action-complete {
+  background: linear-gradient(135deg, #9C27B0, #7B1FA2);
+}
+
+.action-after_sales {
+  background: linear-gradient(135deg, #FF9800, #F57C00);
+}
+
+.action-cancel {
+  background: linear-gradient(135deg, #f44336, #d32f2f);
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: 600;
+}
+
+.price {
+  font-size: 34rpx;
+  color: #ff4d4f;
+  font-weight: 600;
+}
+
+/* 信息行 */
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.row:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  color: #999;
+  font-size: 26rpx;
+}
+
+.value {
+  color: #333;
+  font-size: 28rpx;
+}
+
+/* 描述 */
+.card-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  margin-bottom: 20rpx;
+}
+
+.desc {
+  font-size: 28rpx;
+  line-height: 1.6;
+  color: #444;
+}
+
+/* 底部 */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 20rpx 24rpx;
+  box-shadow: 0 -6rpx 20rpx rgba(0,0,0,0.08);
+}
+
+.chat-btn {
+  flex: 1;
+  background: linear-gradient(135deg, #1296db, #007aff);
+  color: white;
+  border-radius: 12rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  border: none;
+}
+
+/* 意向选择 */
+.intent-selection {
+  display: flex;
+  justify-content: space-around;
+  gap: 20rpx;
+  margin-top: 20rpx;
+}
+
+.intent-btn {
+  flex: 1;
+  font-size: 28rpx;
+  border-radius: 12rpx;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+}
+
+.intent-btn.accept {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+}
+
+.intent-btn.reject {
+  background: linear-gradient(135deg, #f44336, #d32f2f);
+}

@@ -1,0 +1,160 @@
+<view class="container">
+  <!-- 1. 状态卡片 -->
+  <view class="card">
+    <view class="header">
+      <text class="title">第 {{displayIndex}} 课</text>
+      <view class="status-tag {{lesson.status}}">
+        {{lesson.status === 'PENDING' ? '待发起' : 
+          (lesson.status === 'WAIT_PAYMENT' ? '待支付' :
+          (lesson.status === 'PAID' ? '已支付' :
+          (lesson.status === 'COACH_READY' ? '教练就绪' : 
+          (lesson.status === 'PARENT_CONFIRMED' ? '上课中' : 
+          (lesson.status === 'COMPLETED_BY_COACH' ? '待结算' : '已完成')))))}}
+      </view>
+    </view>
+    
+    <view class="content">
+      <view class="info-row">
+        <text class="label">当前状态</text>
+        <text class="value">{{lesson.status}}</text>
+      </view>
+      <!-- 支付记录 -->
+      <view class="info-row" wx:if="{{paymentInfo}}">
+        <text class="label">支付记录</text>
+        <text class="value highlight">{{paymentInfo.payer}} 已支付 ({{paymentInfo.time}})</text>
+      </view>
+      <!-- 时间记录 -->
+      <view class="info-row" wx:if="{{lesson.startedAt}}">
+        <text class="label">开始时间</text>
+        <text class="value">{{lesson.startedAt}}</text>
+      </view>
+       <view class="info-row" wx:if="{{lesson.completedAt}}">
+        <text class="label">结束时间</text>
+        <text class="value">{{lesson.completedAt}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 2. 操作区域 -->
+  <view class="card action-card">
+    <view class="section-title">课程操作</view>
+    <view class="action-buttons">
+      
+      <!-- PENDING: 教练发起 -->
+      <button 
+        wx:if="{{(!lesson.status || lesson.status === 'PENDING') && isCoach}}" 
+        class="btn-action primary" 
+        bindtap="handleSendOrder">
+        发起支付单
+      </button>
+      <view wx:if="{{(!lesson.status || lesson.status === 'PENDING') && !isCoach}}" class="hint-text">等待教练发起支付</view>
+
+      <!-- WAIT_PAYMENT: 家长支付 -->
+      <button 
+        wx:if="{{lesson.status === 'WAIT_PAYMENT' && !isCoach && !isRoleCoach}}" 
+        class="btn-action warn" 
+        bindtap="handlePayOrder">
+        立即支付
+      </button>
+      <view wx:if="{{lesson.status === 'WAIT_PAYMENT' && (isCoach || isRoleCoach)}}" class="hint-text">等待家长支付</view>
+
+      <!-- PAID: 教练开始上课 (跳过家长确认) -->
+      <button 
+        wx:if="{{lesson.status === 'PAID' && isCoach}}" 
+        class="btn-action primary" 
+        data-subaction="coach_ready" 
+        bindtap="handleLessonHandshake">
+        开始上课
+      </button>
+      <view wx:if="{{lesson.status === 'PAID' && !isCoach}}" class="hint-text">等待教练开始上课</view>
+
+      <!-- COACH_READY: 兼容旧数据或异常状态，允许继续操作 -->
+      <view wx:if="{{lesson.status === 'COACH_READY'}}">
+        <button 
+          wx:if="{{isCoach}}" 
+          class="btn-action finish" 
+          data-subaction="coach_complete" 
+          bindtap="handleLessonHandshake">
+          下课
+        </button>
+        <view wx:if="{{!isCoach}}" class="hint-text running">正在上课中...</view>
+      </view>
+
+      <!-- PARENT_CONFIRMED: 上课中，教练点结束 -->
+      <view wx:if="{{lesson.status === 'PARENT_CONFIRMED'}}">
+        <view class="hint-text running">正在上课中...</view>
+        <button 
+          wx:if="{{isCoach}}" 
+          class="btn-action finish" 
+          data-subaction="coach_complete" 
+          bindtap="handleLessonHandshake">
+          下课
+        </button>
+      </view>
+
+      <!-- COMPLETED_BY_COACH: 家长确认结束 (释放款项) -->
+      <button 
+        wx:if="{{lesson.status === 'COMPLETED_BY_COACH' && !isCoach && !isRoleCoach}}" 
+        class="btn-action finish" 
+        data-subaction="parent_complete" 
+        bindtap="handleLessonHandshake">
+        完成 (正式汇款)
+      </button>
+      <view wx:if="{{lesson.status === 'COMPLETED_BY_COACH' && (isCoach || isRoleCoach)}}" class="hint-text">等待家长确认下课</view>
+
+      <!-- DONE: 已完成 -->
+      <view wx:if="{{lesson.status === 'DONE'}}" class="hint-text done">本节课已圆满结束</view>
+    </view>
+  </view>
+
+  <!-- 3. 精彩瞬间 (媒体上传) -->
+  <view class="card media-card" wx:if="{{lesson.status !== 'PENDING' && lesson.status !== 'WAIT_PAYMENT'}}">
+    <view class="card-header-row">
+      <view class="section-title">精彩瞬间</view>
+      <view class="upload-btn" bindtap="handleUploadMedia" wx:if="{{isCoach || isOwner}}">
+        <text>+ 上传</text>
+      </view>
+    </view>
+    
+    <view class="media-grid">
+      <block wx:if="{{mediaList && mediaList.length > 0}}">
+        <view class="media-item" wx:for="{{mediaList}}" wx:key="*this" data-url="{{item}}" bindtap="previewMedia">
+          <image src="{{item}}" mode="aspectFill"></image>
+        </view>
+      </block>
+      <view wx:else class="empty-hint">暂无照片/视频</view>
+    </view>
+  </view>
+
+  <!-- 4. 课堂总结 -->
+  <view class="card summary-card" wx:if="{{lesson.status !== 'PENDING' && lesson.status !== 'WAIT_PAYMENT'}}">
+    <view class="card-header-row">
+      <view class="section-title">课堂总结</view>
+      <view class="edit-btn" bindtap="openSummaryModal" wx:if="{{isCoach}}">
+        <text>✎ 编辑</text>
+      </view>
+    </view>
+    <view class="summary-content">
+      <text wx:if="{{lesson.summary}}">{{lesson.summary}}</text>
+      <text wx:else class="empty-hint">教练暂未填写总结</text>
+    </view>
+  </view>
+
+  <!-- 总结编辑弹窗 -->
+  <view class="modal-mask" wx:if="{{showSummaryModal}}">
+    <view class="modal-container">
+      <view class="modal-title">课堂总结</view>
+      <textarea 
+        class="modal-textarea" 
+        placeholder="请输入本节课的表现、进步点及建议..." 
+        value="{{summaryInput}}" 
+        bindinput="handleSummaryInput"
+      ></textarea>
+      <view class="modal-footer">
+        <button class="btn-cancel" bindtap="closeSummaryModal">取消</button>
+        <button class="btn-confirm" bindtap="saveSummary">保存</button>
+      </view>
+    </view>
+  </view>
+
+</view>

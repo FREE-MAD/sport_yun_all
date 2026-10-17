@@ -1,0 +1,502 @@
+/* pages/task/publish/publish_pdd/publish_pdd.wxss */
+
+/* 变量定义 (模拟) */
+/* 
+  Primary: #1976d2 
+  Background: #f7f8fa
+  Text Main: #333333
+  Text Sub: #666666
+  Border: #eeeeee
+*/
+
+/* 全局布局锁定 */
+page {
+  height: 100%;
+  overflow: hidden;
+  background-color: #f7f8fa;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Segoe UI, Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.safe-top {
+  width: 100%;
+  background-color: #fff;
+  flex-shrink: 0;
+}
+
+/* 顶部 Tab 栏 - 更加现代简洁 */
+.top-tabbar {
+  width: 100%;
+  height: 96rpx;
+  background-color: #fff;
+  white-space: nowrap;
+  display: flex;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.03);
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.tab-item {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 30rpx;
+  color: #666;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+}
+
+.tab-item.active {
+  color: #1976d2;
+  font-weight: 700;
+  font-size: 32rpx;
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 12rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40rpx;
+  height: 6rpx;
+  background: linear-gradient(90deg, #1976d2, #64b5f6);
+  border-radius: 6rpx;
+  box-shadow: 0 2rpx 4rpx rgba(25, 118, 210, 0.3);
+}
+
+.main-layout {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0; 
+  position: relative;
+}
+
+/* 内容区 */
+.content-area {
+  flex: 1;
+  height: 100%;
+  background-color: #f7f8fa;
+  box-sizing: border-box;
+  padding-bottom: 40rpx; /* 底部留白 */
+}
+
+/* 顶部说明 - 更加柔和 */
+.tab-desc {
+  padding: 24rpx 32rpx;
+  background: linear-gradient(to right, #e3f2fd, #f0f7ff);
+  color: #1565c0;
+  font-size: 26rpx;
+  margin: 24rpx;
+  border-radius: 16rpx;
+  line-height: 1.5;
+  border: 1rpx solid rgba(25, 118, 210, 0.1);
+}
+
+/* 通用列表与表单容器 */
+.list-wrapper, .form-wrapper {
+  padding: 0 24rpx 40rpx;
+}
+
+.section-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #222;
+  margin: 40rpx 0 24rpx;
+  padding-left: 0;
+  display: flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.section-title::before {
+  content: '';
+  display: inline-block;
+  width: 8rpx;
+  height: 32rpx;
+  background: linear-gradient(to bottom, #1976d2, #64b5f6);
+  margin-right: 16rpx;
+  border-radius: 4rpx;
+}
+
+/* 附近列表项 - 卡片化 */
+.nearby-item {
+  display: flex;
+  align-items: center;
+  padding: 30rpx;
+  margin-bottom: 24rpx;
+  background-color: #fff;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.04);
+  border: 1rpx solid transparent;
+  transition: all 0.2s;
+}
+
+.nearby-item:active {
+  transform: scale(0.99);
+  background-color: #fafafa;
+}
+
+.nearby-avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  margin-right: 24rpx;
+  background-color: #eee;
+  border: 2rpx solid #fff;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.1);
+}
+
+.nearby-content {
+  flex: 1;
+  overflow: hidden;
+}
+
+.nearby-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.nearby-desc {
+  font-size: 26rpx;
+  color: #888;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nearby-distance {
+  font-size: 24rpx;
+  color: #999;
+  margin-left: 20rpx;
+  background-color: #f5f5f5;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+}
+
+.empty-tip {
+  text-align: center;
+  color: #999;
+  font-size: 28rpx;
+  padding: 100rpx 0;
+}
+
+/* 课堂卡片 - 横向滑动优化 */
+.class-list {
+  display: flex;
+  flex-direction: row;
+  gap: 24rpx;
+  white-space: nowrap;
+  width: 100%;
+  padding-bottom: 20rpx; /* 给阴影留空间 */
+}
+
+.class-card {
+  width: 600rpx;
+  flex-shrink: 0;
+  background-color: #fff;
+  border-radius: 24rpx;
+  border: none;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.06);
+}
+
+.class-card.active {
+  background-color: #fff;
+  box-shadow: 0 12rpx 32rpx rgba(25, 118, 210, 0.15);
+  transform: translateY(-2rpx);
+}
+
+.class-card-header {
+  padding: 30rpx;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(to right bottom, #fff, #fbfbfb);
+}
+
+.class-info {
+  flex: 1;
+}
+
+.class-name {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 8rpx;
+}
+
+.class-desc {
+  font-size: 26rpx;
+  color: #888;
+  line-height: 1.4;
+}
+
+.class-sub-toggle {
+  padding: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+  color: #1976d2;
+  background-color: #f8fbff;
+  border-top: 1rpx solid #f0f4f8;
+  font-weight: 500;
+}
+
+.class-sub-toggle .arrow {
+  margin-left: 10rpx;
+  font-size: 22rpx;
+  transition: transform 0.3s;
+}
+
+.class-sub-toggle .arrow.up {
+  transform: rotate(180deg);
+}
+
+.class-sub-list {
+  padding: 10rpx 30rpx 30rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+  background-color: #fff;
+  white-space: normal;
+}
+
+.class-sub-item {
+  padding: 12rpx 32rpx;
+  font-size: 28rpx;
+  color: #555;
+  background-color: #f5f7fa;
+  border-radius: 40rpx;
+  border: 2rpx solid transparent;
+  transition: all 0.2s;
+}
+
+.class-sub-item.active {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  border-color: rgba(25, 118, 210, 0.3);
+  font-weight: 600;
+  box-shadow: 0 4rpx 10rpx rgba(25, 118, 210, 0.1);
+}
+
+/* 课程介绍详情 */
+.course-intro-card {
+  background-color: #fff;
+  border-radius: 20rpx;
+  padding: 32rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.05);
+}
+
+.course-current-name {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 24rpx;
+  padding-bottom: 16rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.course-images {
+  display: flex;
+  height: 200rpx;
+  margin-bottom: 24rpx;
+}
+
+.course-image {
+  width: 280rpx;
+  height: 180rpx;
+  border-radius: 16rpx;
+  margin-right: 20rpx;
+  background-color: #eee;
+  flex-shrink: 0;
+  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.1);
+}
+
+.course-plan {
+  background-color: #f9fafb;
+  padding: 24rpx;
+  border-radius: 16rpx;
+  border: 1rpx solid #f0f0f0;
+}
+
+.plan-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.plan-text {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+/* 表单通用样式 - 更加通透 */
+.form-section {
+  margin-bottom: 48rpx;
+}
+
+.form-item {
+  margin-bottom: 32rpx;
+}
+
+.label {
+  display: block;
+  font-size: 28rpx;
+  color: #444;
+  margin-bottom: 16rpx;
+  font-weight: 600;
+}
+
+.label.required::after {
+  content: '*';
+  color: #ff4d4f;
+  margin-left: 6rpx;
+  font-size: 32rpx;
+  vertical-align: middle;
+}
+
+.input, .picker-view {
+  width: 100%;
+  height: 96rpx;
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 0 30rpx;
+  font-size: 30rpx;
+  color: #333;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  border: 2rpx solid #eee;
+  transition: all 0.3s;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 200rpx;
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx 30rpx;
+  font-size: 30rpx;
+  color: #333;
+  box-sizing: border-box;
+  border: 2rpx solid #eee;
+  transition: all 0.3s;
+  line-height: 1.5;
+}
+
+.input:focus, .textarea:focus {
+  border-color: #1976d2;
+  box-shadow: 0 0 0 4rpx rgba(25, 118, 210, 0.1);
+  background-color: #fff;
+}
+
+.picker-view {
+  justify-content: space-between;
+}
+
+.placeholder {
+  color: #bbb;
+}
+
+.arrow {
+  color: #ccc;
+  font-size: 36rpx;
+}
+
+.switch-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 24rpx 30rpx;
+  border-radius: 16rpx;
+  border: 2rpx solid #eee;
+}
+
+.switch-item .label {
+  margin-bottom: 0;
+}
+
+/* 提交按钮 - 更有质感 */
+.submit-area {
+  margin-top: 60rpx;
+  padding-bottom: 60rpx;
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, #1976d2, #1565c0);
+  color: #fff;
+  font-size: 34rpx;
+  font-weight: 700;
+  border-radius: 50rpx;
+  height: 96rpx;
+  line-height: 96rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10rpx 30rpx rgba(21, 101, 192, 0.3);
+  transition: all 0.3s;
+}
+
+.submit-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 6rpx 20rpx rgba(21, 101, 192, 0.2);
+}
+
+/* 遮罩层 */
+.cover-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.loading-spinner {
+  width: 70rpx;
+  height: 70rpx;
+  border: 6rpx solid #e3f2fd;
+  border-top-color: #1976d2;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 24rpx;
+}
+
+.cover-mask text {
+  color: #555;
+  font-size: 30rpx;
+  font-weight: 500;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

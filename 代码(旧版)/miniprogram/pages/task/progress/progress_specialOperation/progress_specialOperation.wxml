@@ -1,0 +1,255 @@
+<view class="container">
+  <view style="height: {{statusBarHeight}}px; width: 100%;"> <!-- 顶部安全区 --> </view>
+    <!-- 1. 中间：任务进度卡片 -->
+    <view class="course-card">
+    <view class="card-header">
+      <text class="course-title">任务进度</text>
+    </view>
+    
+    <view class="progress-steps">
+      <!-- Step 1: 发布 -->
+      <view class="step-item {{currentStep >= 0 ? 'active' : ''}}">
+        <view class="step-circle">1</view>
+        <text class="step-text">发布</text>
+      </view>
+      <view class="step-line {{currentStep >= 1 ? 'active' : ''}}"></view>
+      
+      <!-- Step 2: 凑单 -->
+      <view class="step-item {{currentStep >= 1 ? 'active' : ''}}">
+        <view class="step-circle">2</view>
+        <text class="step-text">家长加入</text>
+      </view>
+      <view class="step-line {{currentStep >= 2 ? 'active' : ''}}"></view>
+      
+      <!-- Step 3: 家教协商 -->
+      <view class="step-item {{currentStep >= 2 ? 'active' : ''}}">
+        <view class="step-circle">3</view>
+        <text class="step-text">家教协商</text>
+      </view>
+      <view class="step-line {{currentStep >= 3 ? 'active' : ''}}"></view>
+      
+      <!-- Step 4: 开课 -->
+      <view class="step-item {{currentStep >= 3 ? 'active' : ''}}">
+        <view class="step-circle">4</view>
+        <text class="step-text">开课</text>
+      </view>
+    </view>
+
+    <!-- 进度评述 -->
+    <view class="progress-comment">
+      <text class="comment-text">
+        {{statusText || '发布后，家长加入拼课 → 家教协商细节 → 锁班开课，每一步上面的流程状态都会更新。'}}
+      </text>
+    </view>
+  </view>
+  <!-- 2. 中部：课程信息卡 -->
+  <view class="course-card">
+    <view class="card-header">
+      <view class="header-row">
+        <text class="tag-intention">课程意向</text>
+        <text class="tag-status">招生中</text>
+      </view>
+      <view class="course-title">{{order.title || '体能课 · 4-6岁 · 周末'}}</view>
+    </view>
+    <view class="card-body">
+      <view class="info-row">
+        <text class="label">地点：</text>
+        <text class="value">{{order.location || 'XX社区（可协商）'}}</text>
+      </view>
+      <view class="info-row">
+        <text class="label">截止：</text>
+        <text class="value">{{deadlineDisplay || order.deadline || '2天后'}}</text>
+      </view>
+      <view class="info-row" wx:if="{{order.price}}">
+        <text class="label">价格：</text>
+        <text class="value price">¥{{order.price}}</text>
+      </view>
+      <view class="info-row" wx:if="{{order.intention}}">
+        <text class="label">说明：</text>
+        <text class="value">{{order.intention}}</text>
+      </view>
+    </view>
+
+    <!-- 状态驱动操作栏 -->
+    <view class="action-bar-wrapper">
+      <view class="action-bar" wx:if="{{order.publisher_Id === user.openid}}">
+        <view class="status-text" bindtap="openIntentionModal">
+          当前: {{statusText}} <text class="edit-hint">✎</text>
+        </view>
+        <view class="action-right">
+          <view class="expand-trigger" bindtap="toggleIntentions">
+            <text>家长意愿({{order.participants ? order.participants.length : 0}})</text>
+            <view class="arrow {{showIntentions ? 'up' : 'down'}}"></view>
+          </view>
+          <button class="action-btn {{actionBtnClass}}" bindtap="handleAction">
+            {{actionBtnText}}
+          </button>
+        </view>
+      </view>
+      
+      <!-- 展开的家长意愿列表 -->
+      <view class="intentions-panel" wx:if="{{showIntentions}}">
+        <block wx:if="{{order.participants && order.participants.length > 0}}">
+          <view class="participant-row" wx:for="{{order.participants}}" wx:key="openid">
+            <image class="p-avatar" src="{{item.userInfo.avatarUrl || '/images/icons/avatar.png'}}"></image>
+            <text class="p-name">{{item.userInfo.nickName || '用户'}}</text>
+            <view class="p-status {{item.status === 'confirmed' ? 'confirmed' : ''}}">
+              {{item.status === 'confirmed' ? ((order.fulfill_state === 'negotiating' || order.fulfill_state === 'accepted') ? '已派单' : '已确认') : '已加入'}}
+            </view>
+          </view>
+        </block>
+       <view wx:else class="no-participants">暂无家长加入</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 2.5 家长列表 (P方可见) -->
+  <view class="course-card" wx:if="{{!isRoleCoach && (!schedule || schedule.length === 0)}}">
+    <view class="card-header" bindtap="toggleParticipants">
+      <view class="header-row" style="justify-content: space-between; width: 100%; margin-bottom: 0;">
+        <text class="course-title">已加入家长 ({{order.participants ? order.participants.length : 0}})</text>
+        <view class="arrow {{showParticipants ? 'up' : 'down'}}"></view>
+      </view>
+    </view>
+    
+    <view class="card-body" wx:if="{{showParticipants}}">
+      <block wx:if="{{order.participants && order.participants.length > 0}}">
+        <view class="participant-row" wx:for="{{order.participants}}" wx:key="openid">
+          <image class="p-avatar" src="{{item.userInfo.avatarUrl || '/images/icons/avatar.png'}}"></image>
+          <view class="p-content">
+            <view style="display: flex; align-items: center;">
+              <text class="p-name">{{item.userInfo.nickName || '用户'}}</text>
+              <text class="tag-status" style="margin-left: 10rpx; background-color: #e6f7ff; color: #1890ff;" wx:if="{{index === 0}}">发布者</text>
+            </view>
+            <text class="p-desc" style="font-size: 24rpx; color: #999;">{{item.status === 'confirmed' ? '已确认' : '已加入'}} | 孩子: {{item.intention.childCount || 1}}人</text>
+          </view>
+          <view class="p-action" style="margin-left: auto;">
+             <view class="p-status confirmed" wx:if="{{order.acceptorId}}">平台已派单</view>
+             <button class="btn-mini" style="font-size: 24rpx; padding: 0 20rpx; height: 50rpx; line-height: 50rpx; background: #1890ff; color: #fff; border-radius: 25rpx;" bindtap="handleJoinGroupChat" wx:else>加入群聊</button>
+          </view>
+        </view>
+      </block>
+      <view wx:else class="no-participants">暂无家长加入</view>
+    </view>
+  </view>
+
+  <!-- 3. 教练意向列表 -->
+  <view class="course-card" wx:if="{{(willingList.length > 0 || unwillingList.length > 0) && (!schedule || schedule.length === 0)}}">
+    <view class="card-header">
+      <text class="course-title">教练反馈</text>
+    </view>
+    
+    <view class="card-body">
+        <!-- 愿意接单 -->
+        <view class="intentions-group" wx:if="{{willingList.length > 0}}">
+        <view class="group-title">愿意接单 ({{willingList.length}})</view>
+        <view class="participant-row" wx:for="{{willingList}}" wx:key="openid">
+            <image class="p-avatar" src="{{item.userInfo.avatarUrl || '/images/icons/avatar.png'}}"></image>
+            <view class="p-content">
+                <text class="p-name">{{item.userInfo.nickName || '教练'}}</text>
+                <text class="p-desc" style="font-size: 24rpx; color: #999; display: block;" wx:if="{{item.expectedPrice}}">期望时薪：¥{{item.expectedPrice}}/小时</text>
+            </view>
+            <view class="p-action" style="margin-left: auto;">
+                <view class="p-status confirmed">愿意接单</view>
+            </view>
+        </view>
+        </view>
+
+        <!-- 拒绝接单 -->
+        <view class="intentions-group" wx:if="{{unwillingList.length > 0}}" style="margin-top: 20rpx;">
+        <view class="group-title">无法接单 ({{unwillingList.length}})</view>
+        <view class="participant-row" wx:for="{{unwillingList}}" wx:key="openid">
+            <image class="p-avatar" src="{{item.userInfo.avatarUrl || '/images/icons/avatar.png'}}"></image>
+            <view class="p-content">
+                <text class="p-name">{{item.userInfo.nickName || '教练'}}</text>
+                <text class="p-desc" style="font-size: 24rpx; color: #999; display: block;">{{item.rejectReason}}</text>
+            </view>
+        </view>
+        </view>
+    </view>
+  </view>
+
+
+
+  <!-- 2.5 课表/执行区域 (仅当有schedule时显示) -->
+  <view class="course-card" wx:if="{{schedule && schedule.length > 0}}">
+    <view class="card-header">
+      <text class="course-title">课程进度表 ({{order.progress_done}}/{{order.progress_total}})</text>
+    </view>
+    <view class="schedule-list">
+      <block wx:for="{{schedule}}" wx:key="index">
+        <view class="single-schedule-item {{item.status === 'DONE' ? 'done' : ''}}" bindtap="handleToClassDetail" data-index="{{index}}">
+          <view class="schedule-left">
+            <text class="lesson-index">第 {{index + 1}} 课</text>
+            <view class="lesson-status-tag {{item.status}}">
+              {{item.status === 'PENDING' ? '待发起' : 
+                (item.status === 'WAIT_PAYMENT' ? '待支付' :
+                (item.status === 'PAID' ? '已支付' :
+                (item.status === 'COACH_READY' ? '教练就绪' : 
+                (item.status === 'PARENT_CONFIRMED' ? '上课中' : 
+                (item.status === 'COMPLETED_BY_COACH' ? '待结算' : '已完成')))))}}
+            </view>
+          </view>
+          
+          <view class="schedule-action">
+            <text class="action-text">查看详情</text>
+            <text class="iconfont icon-right"></text>
+          </view>
+        </view>
+      </block>
+      
+      <!-- 手动添加课节按钮 (仅教练可见) -->
+      <view class="add-lesson-btn" bindtap="handleAddLesson" wx:if="{{isCoach}}">
+        <text class="add-icon">+</text>
+        <text>添加课节</text>
+      </view>
+    </view>
+  </view>
+
+
+  <!-- 3. 底部区域：操作栏 -->
+  <view class="bottom-bar" wx:if="{{!isRoleCoach || isCoach}}">
+    <button class="btn-main parent-op" bindtap="handleParentOperation" wx:if="{{isOwner}}">{{order.fulfill_state === 'cancelled' ? '重新发布' : '家长操作'}}</button>
+    <button class="btn-main group-chat" bindtap="handleJoinGroupChat">进入群聊</button>
+  </view>
+
+  <!-- 4. 教练等待提示栏 (仅在 pending 状态或已派单且为非接单教练身份时显示) -->
+  <view class="bottom-bar waiting-bar" wx:if="{{isRoleCoach && !isCoach && (order.fulfill_state === 'pending' || order.acceptorId)}}">
+    <view class="waiting-text" wx:if="{{order.acceptorId}}">平台已派单</view>
+    <button class="btn-main group-chat" bindtap="handleJoinGroupChat" wx:else>进入群聊</button>
+  </view>
+
+  <!-- 意向填写弹窗 -->
+  <view class="modal-mask" wx:if="{{showIntentionModal}}" bindtap="closeIntentionModal">
+    <view class="modal-container" catchtap="preventBubble">
+      <view class="modal-header">填写拼课意向</view>
+      <view class="modal-content">
+        <view class="form-item">
+          <text class="form-label required">手机号</text>
+          <input class="form-input" placeholder="请输入手机号" value="{{intentionForm.contact}}" data-field="contact" bindinput="handleIntentionInput" type="number" maxlength="11"/>
+        </view>
+        <view class="form-item">
+          <text class="form-label">合适时间(选填)</text>
+          <input class="form-input" placeholder="例如：周六上午10点" value="{{intentionForm.time}}" data-field="time" bindinput="handleIntentionInput" />
+        </view>
+        <view class="form-item">
+          <text class="form-label">对教练的要求(选填)</text>
+          <input class="form-input" placeholder="例如：有耐心、专业资质等" value="{{intentionForm.coachRequirements}}" data-field="coachRequirements" bindinput="handleIntentionInput" />
+        </view>
+        <view class="form-item">
+          <text class="form-label required">孩子数量</text>
+          <view class="stepper">
+            <view class="step-btn {{intentionForm.childCount <= 1 ? 'disabled' : ''}}" bindtap="decrementChild">-</view>
+            <view class="step-num">{{intentionForm.childCount}}</view>
+            <view class="step-btn" bindtap="incrementChild">+</view>
+          </view>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="btn-cancel" bindtap="closeIntentionModal">取消</button>
+        <button class="btn-submit" bindtap="submitIntention">确认提交</button>
+      </view>
+    </view>
+  </view>
+
+</view>

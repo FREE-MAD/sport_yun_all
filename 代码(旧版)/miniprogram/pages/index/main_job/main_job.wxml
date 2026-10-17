@@ -1,0 +1,81 @@
+<view class="page">
+
+<!-- 顶部渐变区域 -->
+<view class="hero">
+  <view class="hero-title">附近的任务/工作</view>
+  <!-- <view class="hero-sub">3公里内的新任务</view> -->
+</view>
+
+<!-- 指标区 -->
+<view class="metrics">
+  <view class="metric" wx:for="{{metrics}}" wx:key="label">
+    <view class="metric-label">{{item.label}}</view>
+    <view class="metric-num">{{item.num}}</view>
+  </view>
+</view>
+
+<!-- 搜索 + Chips 整体卡片 -->
+<view class="search-card">
+
+<!-- 搜索栏 + 筛选 -->
+<view class="search-row">
+  <view class="search">
+    <input class="search-input"
+           placeholder="搜索任务..."
+           bindinput="onSearchInput"
+    />
+  </view>
+  <view class="filter-btn" bindtap="tapFilter">
+    <text class="iconfont">&#xe6ce;</text>
+  </view>
+</view>
+
+<!-- 嵌套 tabbar (chips) -->
+<scroll-view class="chips" scroll-x>
+  <view class="chip {{activeChip===item.key?'active':''}}"
+        wx:for="{{chips}}"
+        wx:key="key"
+        data-key="{{item.key}}"
+        bindtap="tapChip">
+    {{item.name}}
+  </view>
+</scroll-view>
+
+</view>
+
+
+<!-- 列表 -->
+<view class="list">
+  <block wx:if="{{list.length===0}}">
+    <view class="empty">未找到任务</view>
+  </block>
+
+  <block wx:for="{{Filterlist}}" wx:key="id">
+    <view class="card">
+      <view class="avatar">{{item.initials}}</view>
+
+      <view class="card-body">
+        <view class="card-title">{{item.title}}</view>
+        <view class="card-sub">{{item.user}}</view>
+
+        <view class="meta">
+          <text>{{item.timeAgo}}</text>
+          <text> · </text>
+          <text>{{item.dist}}</text>
+        </view>
+      </view>
+
+      <view class="price-area">
+        <text class="price">{{item.price}} </text>
+        <button class="accept-btn" bindtap="tapAccept" data-id="{{item._id}}">
+          了解详情
+        </button>
+      </view>
+    </view>
+  </block>
+
+  <!-- 新增：触底加载提示 -->
+  <view class="load-tips" wx:if="{{hasMore && !loading}}">上拉加载更多...</view>
+  <view class="load-tips" wx:elif="{{!hasMore && Filterlist.length>0}}">已加载全部数据</view>
+</view>
+</view>
